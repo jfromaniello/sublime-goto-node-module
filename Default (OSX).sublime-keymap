@@ -1,0 +1,3 @@
+[
+	{ "keys": ["super+shift+l"], "command": "go_to_node_module_homepage" }
+]
