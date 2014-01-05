@@ -14,14 +14,14 @@ class GoToNodeModuleHomepage(sublime_plugin.TextCommand):
                 Popen(['start', url], shell= True)
 
             elif sys.platform=='darwin':
-                print 'open ' + url
+                print('open %s' % url)
                 Popen(['open', url])
 
             else:
                 try:
                     Popen(['xdg-open', url])
                 except OSError:
-                    print "Can't find xdg-open"
+                    print("Can't find xdg-open")
                     # er, think of something else to try
                     # xdg-open *should* be supported by recent Gnome, KDE, Xfce
 
@@ -35,8 +35,8 @@ class GoToNodeModuleHomepage(sublime_plugin.TextCommand):
 
         def get_url(dir):
             json_data =  open(os.path.join(dir, 'package.json')).read()
-            print 'package json data:'
-            print json_data
+            print('package json data:')
+            print(json_data)
             package_json = json.loads( json_data )
             if 'homepage' in package_json:
                 return package_json['homepage']
@@ -52,7 +52,7 @@ class GoToNodeModuleHomepage(sublime_plugin.TextCommand):
                 for dir in [name for name in os.listdir(candidate)
                                  if os.path.isdir(os.path.join(candidate, name)) and name != ".bin"]:
                     resolvers.append(lambda dir=dir: get_url(os.path.join(candidate, dir)))
-                    suggestions.append("module: " + dir)
+                    suggestions.append("module: %s" % dir)
                 break
             current_dir = os.path.split(current_dir)[0]
         return [resolvers, suggestions]
@@ -68,7 +68,7 @@ class GoToNodeModuleHomepage(sublime_plugin.TextCommand):
             results = json.loads(jsresult)
 
             result = [[(lambda ni=ni: "http://nodejs.org/api/%s.html" % ni) for ni in results],
-                    ["native: " + ni for ni in results]]
+                    ["native: %s" % ni for ni in results]]
             return result
         except Exception:
             return [[], []]
